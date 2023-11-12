@@ -49,7 +49,7 @@ While true:
 			If tokens is empty:
 				Append token to tokens
 			
-			Elif token.info.code is equal to tokens[0].info.code:
+			Elif token is equal to first token in tokens
 				Remove token from tokens
 				Insert token at index 0 in tokens
 				return nearest_token
@@ -118,7 +118,7 @@ elif rot_y greater then a_th:
 
 ```
 
-The function `token_target called` in the reach_and grab function return the token that is in the collection point
+The function `token_target` called in the reach_and grab function return the token that is in the collection point
 
 ```plaintext
 while 1:
@@ -160,9 +160,4 @@ while len(grabbed_token) < end :
 ###Possible improvements###
 The robot could turn less to find the nearest token by controlling the size of the list tokens. In fact, knowing the number of total tokens and the number of tokens taken, we can make the robot stop turning when the size of the list tokens, added to the size of the grabbed_token list, is equal to the number of total tokens
 
-### RUN ###
-To run my code:
-go into the rigth folder then run
-```bash
-$ python2 run.py assignment.py
-```
+

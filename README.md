@@ -132,7 +132,7 @@ While true:
 			If tokens is empty:
 				Append token to tokens
 			
-			Elif token.info.code is equal to tokens[0].info.code:
+			Elif token is equal to first token in tokens
 				Remove token from tokens
 				Insert token at index 0 in tokens
 				return nearest_token
@@ -201,7 +201,7 @@ elif rot_y greater then a_th:
 
 ```
 
-The function `token_target called` in the reach_and grab function return the token that is in the collection point
+The function `token_target` called in the reach_and grab function return the token that is in the collection point
 
 ```plaintext
 while 1:
