@@ -98,6 +98,16 @@ In order to put all the boxes togheter I decide to:
 Another possible solution would have been to bring all the tokens to the center, with the assumption that the tokens are in circle, to minimize the distances, but the code would have lost generality.
 
 ### Implementation ###
+Before all I declared the following global variables:
+```
+grabbed_token = [] #this list will contain the token grabbed
+tokens = [] #this list will contain the token seen, not already grabbed
+i = 0 #this variable will count the number of iterations
+end = 1 #this variable will contain the number of  tokens 
+a_th = 2.0 #is the threshold for the control of the orientation
+d_th = 0.4 #is the threshold for the control of the linear distance
+```
+
 I decided to save in a list the tokens seen by the robot, while it turns around, until it sees the first token inserted in the list again, at which point all the tokens will have been seen and we will know which one is the closest one. Once this latter has been identify, the robot will have to reach it directly without stopping to calculate the nearest token. For this reason it is necessary to move the nearest token to the first place in the list. In the subsequent iterations it will also be necessary to check that the closest token has not already been grabbed.
 These steps are implemented in the function called `find_nearest_token`
 
@@ -220,7 +230,7 @@ elif rot_y < -a_th: # if the robot is not well aligned with the token
          turn(+2, 0.5)
 ```
 
-The `main function` call find_nearest_token function and pass the token returned by it to the reach_and_grab function until the lenght of the grabbed_token list will be same of the list tokens at the first iteration, when it contains all the tokens.
+The `main function` call the find_nearest_token function and pass the token returned by it to the reach_and_grab function until the lenght of the grabbed_token list will be same of the list tokens at the first iteration, when it contains all the tokens.
 
 ```plaintext
 while len(grabbed_token) < end :
@@ -230,7 +240,7 @@ while len(grabbed_token) < end :
 	grabbed = reach_and_grab(token)
 ```
 
-###RUN###
-
+###Possible improvements###
+The robot could turn less to find the nearest token by controlling the size of the list tokens. In fact, knowing the number of total tokens and the number of tokens taken, we can make the robot stop turning when the size of the list tokens, added to the size of the grabbed_token list, is equal to the number of total tokens
 
 
