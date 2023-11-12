@@ -158,6 +158,7 @@ while len(grabbed_token) < end :
 ```
 
 ###Possible improvements###
+
 The robot could turn less to find the nearest token by controlling the size of the list tokens. In fact, knowing the number of total tokens and the number of tokens taken, we can make the robot stop turning when the size of the list tokens, added to the size of the grabbed_token list, is equal to the number of total tokens
 
 
