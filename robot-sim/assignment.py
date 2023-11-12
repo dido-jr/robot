@@ -105,7 +105,7 @@ def reach_and_grab(token):
         	grabbed = R.grab() # if we are close to the token, we grab it.
         	grabbed = True
         	i = i+1
-        	grabbed_token.append(token) #add the grabbe dtoken to the grabbed_token list
+        	grabbed_token.append(token) #add the grabbed token to the grabbed_token list
         	print("Gotcha!")
 		if i == 1:
 			end = len(tokens)
@@ -125,7 +125,7 @@ def reach_and_grab(token):
 		      take_to_target(d, rot_yn)  #take the token to the target
 
 		if len(grabbed_token) == 1:
-			grabbed_token.append(tokenn) #add the token in the target position to the grabbe_token list
+			grabbed_token.append(tokenn) #add the token in the target position to the grabbed_token list
 
     		tokens=[] 			
         	return grabbed 
@@ -145,7 +145,6 @@ def take_to_target(dist, rot_y):
         	print("releasing")
         	release = R.release() # if we are close to the token, we grab it.
         	drive(-15,2.5)
-        	#exit()
          elif -a_th<= rot_y <= a_th: # if the robot is well aligned with the token, we go forward
          	print("Ah, here we are!.")
          	drive(10, 0.5)
@@ -171,9 +170,4 @@ while len(grabbed_token) < end:
 	token = find_nearest_token()
 	
 	grabbed = reach_and_grab(token)
-	
-	print("len grabed token:")
-	print(len(grabbed_token))	
-
-	
-	
+			

@@ -76,6 +76,8 @@ for m in markers:
 
 [sr-api]: https://studentrobotics.org/docs/programming/sr/
 
+Assignment 1 Research Track
+================================
 
 ### Objective ###
 Write a python node that controls the robot to put all the golden boxes togheter
@@ -93,15 +95,14 @@ Another possible solution would have been to bring all the tokens to the center,
 ### Implementation ###
 I decided to save in a list the tokens seen by the robot, while it turns around, until it sees the first token inserted in the list again, at which point all the tokens will have been seen and we will know which one is the closest one. Once this latter has been identify, the robot will have to reach it directly without stopping to calculate the nearest token. For this reason it is necessary to move the nearest token to the first place in the list. In the subsequent iterations it will also be necessary to check that the closest token has not already been grabbed
 These steps are implemented function called find_nearest_token
-<pre>
+
 ```plaintext
 set dist to 100
 
 While true:
 	For each token in R.see():
 		Set grabbato to false
-		For each grabbedtoken in grabbed_token
-			if grabbedtoken.info.code is equal to token.info.code
+		if token is in grabbed_token
 				Set grabbato to true
 				exit loop
 		If grabbato:
@@ -116,17 +117,15 @@ While true:
 			If tokens is empty:
 				Append token to tokens
 			
-			else if token.info.code is equal to tokens[0].info.code:
-				For each token in tokens:
-					Remove token from tokens
-					Insert token at index o in tokens
+			elif token.info.code is equal to tokens[0].info.code:
+				Remove token from tokens
+				Insert token at index 0 in tokens
 				return nearest_token !!!!!!!!!!!!!!!
 				
 			Else:
-				For each tokenz in tokens
-					if tokenz.info.code is equal to token.info.code:
-						Set trovato = true
-						Exit loop
+				if token is already in tokens
+					Set trovato = true
+					Exit loop
 				If trovato:
 					Continue
 				Else:
@@ -134,11 +133,10 @@ While true:
 					
 		Turn(10,1)
 ```
-<pre>
 
 Once the previous function returned the nearest token, the robot have to reach and grab it. For this reason I create the function reach_and_grab that take as parameter the token that must be reached. Once the token has been reached it must be taken to the collection point
 
-<pre>
+
 ```plaintext
 set grabbed to false
 global tokens
@@ -196,7 +194,50 @@ elif rot_y greater then a_th:
 	turn(+10, 0.3)
 
 ```
-<pre>
+
+The function token_target called in the reach_and grab function return the token that is in the collection point
+
+```plaintext
+while 1:
+	for each token in R.see()
+		if token is equal to grabbed_token[1]:
+			return token
+		else: continue
+	turn(10, 0.5)
+
+```
+
+While the function take_to_target take as parameter a distance and an angle and take the robot to that position 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
