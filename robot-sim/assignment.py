@@ -114,12 +114,10 @@ def reach_and_grab(token):
     		d = 100
         	while d > d_th:
         	      if len(grabbed_token) == 1: #the first time
-        		print("len 1")
         		tokenn = find_nearest_token() #find the nearest token
-        	      else:                       #the other time
-        	      	print("len magg 1")
-        	      	#print(grabbed_token[1])
+        	      else:                       #the other times
         	      	tokenn = token_target()   #find the token target
+        	      	
         	      d = tokenn.dist - d_th	  #compute the distance from the target
         	      rot_yn = tokenn.rot_y 	  #compute the angle
 		      take_to_target(d, rot_yn)  #take the token to the target
@@ -152,7 +150,7 @@ def take_to_target(dist, rot_y):
          	print("Left a bit...")
          	turn(-2, 0.5)
          elif rot_y > a_th:
-         	print("Right a bit... center")
+         	print("Right a bit...")
          	turn(+2, 0.5)
 
 
@@ -165,9 +163,9 @@ def token_target():
 		turn(10,0.5)
 		
 
-while len(grabbed_token) < end:
-
+while len(grabbed_token) < end : 
+	
 	token = find_nearest_token()
 	
-	grabbed = reach_and_grab(token)
+	grabbed = reach_and_grab(token)		
 			
