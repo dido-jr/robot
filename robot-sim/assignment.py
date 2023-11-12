@@ -45,54 +45,46 @@ def turn(speed, seconds):
     R.motors[0].m0.power = 0
     R.motors[0].m1.power = 0
     
-def find_all_token():
+def find_nearest_token():
     dist = 100
     global tokens
     global grabbed_token
     while 1:
-    	for token in R.see():
-    	  print(token.info.code)
+    	for token in R.see(): # for all tokens that the robot is seeing
     	  grabbato = False
     	  for t in grabbed_token:
-    	    print("grabbe")
-    	    if t.info.code == token.info.code:
+    	    if t.info.code == token.info.code: #check if the tokens was already grabbed
     	      grabbato = True
     	      break
     	  if grabbato == True:
-    	  	print("pass")
-    	        pass
+    	        pass #if the token was already grabbed pass to the next token
     	  else:
     		trovato = False
 
-    		if token.dist < dist:
+    		if token.dist < dist: #find the nearest token
     			dist = token.dist
     			tokenf = token
-    		if tokens == []:#se la lista tokens e' vuota  not tokens
-    			tokens.append(token) #aggiungi il primo token visto
-    			print("primo")
+    		if tokens == []:#if the list tokens is empty
+    			tokens.append(token) #add the first token
     			
-    		#se il token trovato e' uguale al primo hai completato il giro 
-    		elif token.info.code == tokens[0].info.code and len(tokens) > 1: 
-    			print("escii")
+    		#if the token is equal to the first one, you completed a turn 
+    		elif token.info.code == tokens[0].info.code:
 
     			for toke in tokens:
     				if toke.info.code == tokenf.info.code:
     					tokens.remove(toke)
-    					tokens.insert(0,toke)
-    			print("piu vicino:")
-    			print(tokenf.info.code)
-    			return tokenf #ritorna il token piu' vicino
+    					tokens.insert(0,toke) #move the nearest token in the first position
+    			return tokenf #return the nearest token
     		
     		else:
     			for tokenz in tokens:
-    				if tokenz.info.code == token.info.code:
+    				if tokenz.info.code == token.info.code: #check if the token was already in the list
     					trovato = True
     					break
     			if trovato == True:
     				pass
-    		        else:	
-    				print("ciao")
-    				tokens.append(token)   		
+    		        else:
+    				tokens.append(token) #add the token to the list		
 				
     	turn(10,1)
 
@@ -113,32 +105,29 @@ def reach_and_grab(token):
         	grabbed = R.grab() # if we are close to the token, we grab it.
         	grabbed = True
         	i = i+1
-        	grabbed_token.append(token)
+        	grabbed_token.append(token) #add the grabbe dtoken to the grabbed_token list
         	print("Gotcha!")
 		if i == 1:
-			print("sonoo QUIIII")
-			print(len(tokens))
 			end = len(tokens)
-    		tokens = []
+    		tokens = [] #empty the list
+    		
     		d = 100
-
         	while d > d_th:
-        	      if len(grabbed_token) == 1:
+        	      if len(grabbed_token) == 1: #the first time
         		print("len 1")
-        		tokenn = find_all_token()
-        	      else:
+        		tokenn = find_nearest_token() #find the nearest token
+        	      else:                       #the other time
         	      	print("len magg 1")
         	      	#print(grabbed_token[1])
-        	      	tokenn = token_target()
-        	      d = tokenn.dist - d_th
-        	      rot_yn = tokenn.rot_y 
-		      take_to_center(d, rot_yn)
-		#if i >= 1:
-		grabbed_token.append(tokenn)
+        	      	tokenn = token_target()   #find the token target
+        	      d = tokenn.dist - d_th	  #compute the distance from the target
+        	      rot_yn = tokenn.rot_y 	  #compute the angle
+		      take_to_target(d, rot_yn)  #take the token to the target
 
-    		tokens=[]		
-    		for to in tokens:
-    			print(to.info.code)	
+		if len(grabbed_token) == 1:
+			grabbed_token.append(tokenn) #add the token in the target position to the grabbe_token list
+
+    		tokens=[] 			
         	return grabbed 
 
          elif -a_th<= rot_y <= a_th: # if the robot is well aligned with the token, we go forward
@@ -151,11 +140,11 @@ def reach_and_grab(token):
          	print("Right a bit...")
          	turn(+10, 0.3)  
 
-def take_to_center(dist, rot_y):
+def take_to_target(dist, rot_y):
          if dist < d_th: 
         	print("releasing")
         	release = R.release() # if we are close to the token, we grab it.
-        	drive(-10,2)
+        	drive(-15,2.5)
         	#exit()
          elif -a_th<= rot_y <= a_th: # if the robot is well aligned with the token, we go forward
          	print("Ah, here we are!.")
@@ -177,13 +166,14 @@ def token_target():
 		turn(10,0.5)
 		
 
-while 1: #len(grabbed_token) < end
+while len(grabbed_token) < end:
 
-	token = find_all_token()
+	token = find_nearest_token()
 	
 	grabbed = reach_and_grab(token)
 	
-		
+	print("len grabed token:")
+	print(len(grabbed_token))	
 
 	
 	

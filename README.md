@@ -75,3 +75,138 @@ for m in markers:
 ```
 
 [sr-api]: https://studentrobotics.org/docs/programming/sr/
+
+
+### Objective ###
+Write a python node that controls the robot to put all the golden boxes togheter
+
+### Possible solutions ###
+In order to put all the boxes togheter I decide to:
+* find, reach and grab the nearest token
+* take this token to nearest one and release it there (this will be the collection point)
+* find, reach an grab the nearest token (ignoring the token already in the collection point)
+* take this token to the collection point
+* come back to the third point
+
+Another possible solution would have been to bring all the tokens to the center, with the assumption that the tokens are in circle, to minimize the distances, but the code would have lost generality.
+
+### Implementation ###
+I decided to save in a list the tokens seen by the robot, while it turns around, until it sees the first token inserted in the list again, at which point all the tokens will have been seen and we will know which one is the closest one. Once this latter has been identify, the robot will have to reach it directly without stopping to calculate the nearest token. For this reason it is necessary to move the nearest token to the first place in the list. In the subsequent iterations it will also be necessary to check that the closest token has not already been grabbed
+These steps are implemented function called find_nearest_token
+<pre>
+```plaintext
+set dist to 100
+
+While true:
+	For each token in R.see():
+		Set grabbato to false
+		For each grabbedtoken in grabbed_token
+			if grabbedtoken.info.code is equal to token.info.code
+				Set grabbato to true
+				exit loop
+		If grabbato:
+			continue
+		Else:
+			Set trovato to false
+			
+			If token.dist is less than dist
+				Set dist to token.dist
+				Set nearest_token to token !!!!!!!!!!1
+			
+			If tokens is empty:
+				Append token to tokens
+			
+			else if token.info.code is equal to tokens[0].info.code:
+				For each token in tokens:
+					Remove token from tokens
+					Insert token at index o in tokens
+				return nearest_token !!!!!!!!!!!!!!!
+				
+			Else:
+				For each tokenz in tokens
+					if tokenz.info.code is equal to token.info.code:
+						Set trovato = true
+						Exit loop
+				If trovato:
+					Continue
+				Else:
+					Append token to tokens
+					
+		Turn(10,1)
+```
+<pre>
+
+Once the previous function returned the nearest token, the robot have to reach and grab it. For this reason I create the function reach_and_grab that take as parameter the token that must be reached. Once the token has been reached it must be taken to the collection point
+
+<pre>
+```plaintext
+set grabbed to false
+global tokens
+global grabbed_token
+global end
+global i
+set dist to token.dist
+set rot_y to token.rot_y
+
+if dist is equal to -1:
+	print("I don't see any token")
+	exit()
+
+elif dist less then threshold:
+	#grab the token
+	print("Found it")
+	set grabbed = R.grab()
+	set i to i+1
+	append token to grabbed_token
+	print("Gotcha")
+	
+	if i equal to 1:
+		set end to len(tokens)
+	
+	set tokens to empty list
+	
+	#take the grabbed token to the collection point
+	set d to 100
+	while d greater then threshold:
+		if len(grabbed_token) is equal to 1:
+			tokenn = find_nearest_token()
+		else:
+			set tokenn to token_target()
+		set d to tokenn.dist - threshold
+		set rot_yn to tokenn.rot_y
+		take_to_target(d, rot_y)
+	
+	if len(grabbed_token) is equal to 1:
+		append tokenn to grabbed_token
+		
+	set tokens to empty list
+	return grabbed
+
+#drive the robot towards the nearest token	
+elif -a_th <= rot_y <= a_th:
+	print("Ah, here we are!")
+	drive(10, 0.5)
+	
+elif rot_y less then -a_th:
+	print("left a bit...)
+	turn(-2, 0.5)
+	
+elif rot_y greater then a_th:
+	print("Right a bit...")
+	turn(+10, 0.3)
+
+```
+<pre>
+
+
+
+
+
+
+
+
+
+
+
+
+ 
